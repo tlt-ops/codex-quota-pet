@@ -34,6 +34,13 @@ Pending acceptance on a user's Windows 10 or 11 x64 machine:
 
 The workflow artifacts `windows-smoke-evidence` contain source and packaged screenshots plus `report.json`. These checks start the executable from the packaged ZIP; they do not execute the NSIS installation flow or establish live account quota, startup registration, virtual desktops, DPI scaling or audible output on a user's machine.
 
+2026-10-08, [GitHub Actions run 37714163269](https://github.com/tlt-ops/codex-quota-pet/actions/runs/37714163269), release `v1.0.1`, commit `5d6f78c272f91e77618e69f552be7d4399279f14`:
+
+- The same Windows runner completed clean dependency installation, all 25 tests, source render checks, packaging and packaged executable render checks. Both render reports again have verified full-display geometry and no renderer errors.
+- Actual Windows packaged-app captures were inspected after the sprite cleanup. Repeated thin crop-edge bars and the measured left-edge neighboring-character fragments were removed; enclosed white hair and authored interior accents remain.
+- All three [1.0.1 release binaries](https://github.com/tlt-ops/codex-quota-pet/releases/tag/v1.0.1) were downloaded and matched their SHA-256 checksums. The published ZIP application archive reports version 1.0.1 and contains the updated sprite cleanup module.
+- The cleanup regression test covers textured neutral background, a small antialiased outline gap, clipped cell fragments, enclosed white hair and independent accents. The corresponding local macOS development suite also passed all 25 tests and the actual Electron render check.
+
 ### Local development results
 
 2026-10-08, macOS local development check:
