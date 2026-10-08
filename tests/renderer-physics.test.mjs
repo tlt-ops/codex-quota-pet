@@ -101,3 +101,34 @@ test("edge flood fill preserves white hair enclosed by a nonwhite outline", () =
   assert.equal(data[3], 0);
   assert.equal(data[(2 * width + 2) * 4 + 3], 255);
 });
+
+test("textured exterior and clipped strips clear while white hair and detached accents survive", () => {
+  const width = 30,
+    height = 30,
+    data = new Uint8ClampedArray(width * height * 4);
+  const set = (x, y, rgb) => data.set([...rgb, 255], (y * width + x) * 4);
+  // Slightly gray texture is connected to the exterior but misses the old245 cutoff.
+  for (let y = 0; y < height; y++)
+    for (let x = 0; x < width; x++) set(x, y, [239, 241, 246]);
+  for (let y = 8; y <= 22; y++)
+    for (let x = 8; x <= 22; x++) {
+      const border = x === 8 || x === 22 || y === 8 || y === 22;
+      set(x, y, border ? [90, 80, 130] : [255, 255, 255]);
+    }
+  // A tiny light gap in an antialiased outline must not flood the white hair.
+  set(15, 8, [243, 242, 250]);
+  // A thin fragment from the adjacent row and an authored interior sparkle.
+  for (let x = 5; x < 20; x++) set(x, 0, [215, 210, 247]);
+  for (let y = 12; y < 26; y++)
+    for (let x = 0; x < 4; x++) set(x, y, [200, 170, 235]);
+  set(4, 4, [180, 125, 230]);
+  set(4, 5, [180, 125, 230]);
+  set(5, 4, [180, 125, 230]);
+  removeEdgeWhite({ width, height, data });
+  assert.equal(data[(2 * width + 2) * 4 + 3], 0);
+  assert.equal(data[(0 * width + 10) * 4 + 3], 0);
+  assert.equal(data[(20 * width + 2) * 4 + 3], 0);
+  assert.equal(data[(15 * width + 15) * 4 + 3], 255);
+  assert.equal(data[(4 * width + 4) * 4 + 3], 255);
+  assert.equal(data[(8 * width + 12) * 4 + 3], 255);
+});

@@ -1,6 +1,6 @@
 {
   "name": "codex-quota-pet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GPT 娘 — a desktop companion for Codex quota, with charged launches and GPT rain.",
   "main": "desktop/main.cjs",
   "author": "tlt-ops",

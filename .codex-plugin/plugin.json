@@ -1,6 +1,6 @@
 {
   "name": "codex-quota-pet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A local GPT girl desktop companion that shows Codex quota and reset time.",
   "author": {
     "name": "tlt-ops"
