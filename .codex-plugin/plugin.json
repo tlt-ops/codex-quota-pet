@@ -1,0 +1,22 @@
+{
+  "name": "codex-quota-pet",
+  "version": "1.0.0",
+  "description": "A local GPT girl desktop companion that shows Codex quota and reset time.",
+  "author": {
+    "name": "tlt-ops"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "GPT 娘 · Codex 额度桌宠",
+    "shortDescription": "悬浮显示 Codex 剩余额度与重置时间。",
+    "longDescription": "Windows 与 macOS 本地额度桌宠。人物发射、GPT 雨、轮盘控制及 Codex 自动打开；通过本机 app-server 读取额度。",
+    "developerName": "tlt-ops",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": [
+      "检查 GPT 娘的额度显示与自动启动状态。"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>GPT 娘 · 额度桌宠</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pet">
+  <canvas id="portrait" width="400" height="400" aria-label="GPT 娘额度桌宠"></canvas>
+  <div id="quota" role="status" aria-live="polite"></div>
+  <div id="wheel" role="menu" aria-label="桌宠轮盘" hidden></div>
+  <div id="bubble-menu" role="menu" aria-label="额度菜单" hidden></div>
+  <div id="notice" role="alert" hidden></div>
+  <script type="module" src="pet.mjs"></script>
+</body>
+</html>

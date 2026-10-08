@@ -1,0 +1,66 @@
+{
+  "name": "codex-quota-pet",
+  "version": "1.0.0",
+  "description": "GPT 娘 — a desktop companion for Codex quota, with charged launches and GPT rain.",
+  "main": "desktop/main.cjs",
+  "author": "tlt-ops",
+  "license": "MIT",
+  "repository": "https://github.com/tlt-ops/codex-quota-pet",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs tests/*.test.mjs",
+    "smoke": "node scripts/run-smoke.cjs",
+    "dist:win": "electron-builder --win --x64",
+    "dist:win:arm64": "electron-builder --win --arm64"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "io.github.tlt-ops.codex-quota-pet",
+    "productName": "Codex Quota Pet",
+    "asar": true,
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "desktop/**",
+      "assets/gpt_quota_pet.png",
+      "assets/mini_gpt_sheet_original.png",
+      "package.json",
+      "LICENSE",
+      "ASSETS.md"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ],
+      "icon": "assets/gpt_quota_pet.png",
+      "artifactName": "Codex-Quota-Pet-${version}-${arch}.${ext}",
+      "signAndEditExecutable": true,
+      "forceCodeSigning": false
+    },
+    "nsis": {
+      "include": "scripts/installer.nsh",
+      "artifactName": "Codex-Quota-Pet-${version}-${arch}-setup.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "requestExecutionLevel": "user",
+      "artifactName": "Codex-Quota-Pet-${version}-${arch}-portable.${ext}"
+    },
+    "publish": null
+  }
+}

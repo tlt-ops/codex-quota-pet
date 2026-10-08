@@ -1,0 +1,99 @@
+name: Windows build and release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths-ignore:
+      - "docs/**"
+      - "README*"
+      - "ASSETS.md"
+      - "CONTRIBUTING.md"
+      - "LICENSE"
+      - "skills/**"
+      - ".codex-plugin/**"
+      - "native/macos/**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Test quota, visibility, gestures, and particle motion
+        run: npm test
+      - name: Verify actual Electron windows and render screenshots
+        run: npm run smoke
+      - name: Build Windows installer, portable executable, and ZIP
+        run: npm run dist:win
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+      - name: Verify packaged executable and resources
+        shell: pwsh
+        run: |
+          $exe = Get-Item 'dist/win-unpacked/Codex Quota Pet.exe'
+          if ($exe.Length -lt 1MB) { throw 'Missing packaged executable' }
+          if (!(Test-Path 'dist/win-unpacked/resources/app.asar')) { throw 'Missing app resources' }
+          $result = Start-Process -FilePath $exe.FullName -ArgumentList "--smoke-test=$PWD/artifacts/packaged-smoke" -Wait -PassThru
+          if ($result.ExitCode -ne 0) { throw 'Packaged application smoke test failed' }
+          if (!(Test-Path 'artifacts/packaged-smoke/report.json')) { throw 'Packaged smoke produced no report' }
+          Get-ChildItem dist -File | Where-Object Extension -In '.exe','.zip' | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+            "$hash  $($_.Name)" | Add-Content 'dist/SHA256SUMS.txt'
+          }
+      - name: Upload release binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64
+          path: |
+            dist/*.exe
+            dist/*.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+      - name: Upload native Windows render evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-smoke-evidence
+          path: artifacts/
+          if-no-files-found: warn
+
+  release:
+    if: github.event_name != 'pull_request' && github.repository == 'tlt-ops/codex-quota-pet'
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-x64
+          path: release-files
+      - name: Publish versioned Windows downloads
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          version=$(node -p 'require("./package.json").version')
+          tag="v$version"
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --target "$GITHUB_SHA" --title "GPT 娘 $tag · Windows" --notes-file docs/release-notes.md
+          fi
+          gh release upload "$tag" release-files/* --clobber

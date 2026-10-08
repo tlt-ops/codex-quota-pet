@@ -1,0 +1,30 @@
+:root { color-scheme: light; font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; user-select: none; }
+[hidden] { display: none !important; }
+body.pet { width: 400px; height: 400px; position: relative; }
+#portrait { display: block; width: 400px; height: 400px; touch-action: none; }
+#quota { position: absolute; left: 34px; top: 59px; width: 201px; height: 96px; pointer-events: none; color: #33304a; font-size: 16px; font-weight: 600; line-height: 32px; text-align: center; }
+#quota.single { top: 91px; }
+#quota.error { color: #87364f; }
+.quota-line { height: 22px; line-height: 22px; margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.quota-line:first-child { width: 180px; margin-left: 1px; }
+.quota-line:nth-child(3) { width: 164px; margin-left: 9px; }
+#quota.single .quota-line { width: 201px; margin-left: 0; }
+#wheel { position: absolute; inset: 0; z-index: 10; }
+.wheel-disc { position: absolute; width: 348px; height: 348px; border: 2px solid #aaa0d9; border-radius: 50%; background: linear-gradient(165deg, #fffaffee, #ded9fae6); box-shadow: 0 3px 14px #4d408530; animation: unfold .26s ease-out; }
+.wheel-spoke { position: absolute; height: 2.5px; width: 113px; background: #7a6ebeaa; transform-origin: left center; pointer-events: none; }
+.wheel-button, .wheel-hub { position: absolute; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; border-radius: 50%; color: #3d335f; border: 2px solid #aba0d1; background: linear-gradient(#fff, #f2edff); box-shadow: 0 2px 6px #51458738; font: 600 12.5px/17px "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", sans-serif; cursor: pointer; }
+.wheel-button { width: 64px; height: 64px; transition: background .1s; }
+.wheel-button:hover, .wheel-button:focus-visible, .wheel-button.selected { background: linear-gradient(#d0c4fa, #ae9ce8); border-color: #6e57b7; outline: none; }
+.wheel-button.selected { border-width: 3px; }
+.wheel-button small { font-size: 9px; }
+.wheel-hub { width: 56px; height: 56px; color: white; border-color: #5e4da6; background: linear-gradient(#cfc4f5, #9e8fd9); }
+.wheel-hub:hover { background: #ab96e5; }
+@keyframes unfold { from { opacity: .3; scale: .3; } to { opacity: 1; scale: 1; } }
+#bubble-menu { position: absolute; z-index: 11; width: 188px; padding: 7px; border: 1px solid #aca0d1; border-radius: 10px; background: #fffbfff5; box-shadow: 0 3px 12px #46347535; }
+.menu-button { width: 100%; display: block; border: 0; border-radius: 5px; padding: 6px 8px; text-align: left; color: #3d335f; background: transparent; font: 12px "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", sans-serif; cursor: pointer; }
+.menu-button:hover, .menu-button:focus-visible { background: #e8dffa; outline: none; }
+#notice { position: absolute; bottom: 7px; left: 12px; right: 12px; padding: 8px; border-radius: 7px; background: #fff2f6f5; color: #87364f; font-size: 12px; z-index: 20; }
+body.effects { pointer-events: none; }
+#effects { position: absolute; inset: 0; width: 100%; height: 100%; }
